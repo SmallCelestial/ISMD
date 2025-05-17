@@ -38,8 +38,9 @@ class UserNetwork:
         self.graph = nx.Graph()
         self.__init_graph(users, interactions)
 
-    def detect_communities(self):
-        return community_louvain.best_partition(self.graph)
+    @staticmethod
+    def detect_communities(graph: nx.Graph) -> dict[User, int]:
+        return community_louvain.best_partition(graph)
 
     def __init_graph(self, users: List[User], interactions: List[Interaction]):
         self.graph.add_nodes_from(users)
@@ -48,3 +49,5 @@ class UserNetwork:
                 interaction.user1,
                 interaction.user2,
                 tweet=interaction.tweet)
+
+
