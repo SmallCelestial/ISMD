@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 from typing import List
 
 import networkx as nx
@@ -7,7 +6,7 @@ from community import community_louvain
 
 
 class User:
-    def __init__(self, name: str, tweets: List['Tweet'] = None):
+    def __init__(self, name: str):
         self.name = name
 
     def __hash__(self):
@@ -21,8 +20,9 @@ class User:
 
 
 class Tweet:
-    def __init__(self, content: str):
+    def __init__(self, content: str, username: str):
         self.content = content
+        self.username = username
 
     def find_mentioned_users(self):
         return re.findall(r"@(\w+)", self.content)
