@@ -1,25 +1,26 @@
 import networkx as nx
 from matplotlib import cm
 from pyvis.network import Network
-
-from ISMD.model import UserNetwork
-
 import matplotlib.colors as mcolors
+
+
+from model import UserNetwork
+
 
 class NetworkPresenter:
     def __init__(self, user_network: UserNetwork):
         self.user_network = user_network
+        self.partition = None
 
-    def visualize_network(self, top_neighbours_nodes=None) -> tuple[str, dict]:
-
+    def visualize_network(self, top_neighbours_nodes=None) -> str:
         graph = self.user_network.graph
         if top_neighbours_nodes is not None:
-            graph = graph.subgraph(top_neighbours_nodes)
+            graph = self.get_subgraph_with_top_degree_vertices(top_neighbours_nodes)
 
-        partition = UserNetwork.detect_communities(graph)
-        net = self.create_network(graph, partition)
+        self.partition = UserNetwork.detect_communities(graph)
+        net = self.create_network(graph, self.partition)
 
-        return net.generate_html(), partition
+        return net.generate_html()
 
     def create_network(self, graph: nx.Graph, partition: dict) -> Network:
 

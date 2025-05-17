@@ -2,7 +2,7 @@ from typing import Iterable
 
 import pandas as pd
 
-from ISMD.model import User, Tweet, Interaction, UserNetwork
+from model import User, Tweet, Interaction, UserNetwork
 
 
 def get_users(df: pd.DataFrame) -> dict[str, User]:
