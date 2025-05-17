@@ -9,19 +9,6 @@ from community import community_louvain
 class User:
     def __init__(self, name: str, tweets: List['Tweet'] = None):
         self.name = name
-        self.tweets = tweets if tweets else []
-
-    def add_tweet(self, tweet: 'Tweet'):
-        if self.tweets is None:
-            self.tweets = []
-        self.tweets.append(tweet)
-
-    def get_all_mentions(self):
-        mentions = set()
-        for tweet in self.tweets:
-            mentions.update(tweet.mentioned_users_names)
-
-        return mentions
 
     def __hash__(self):
         return hash(self.name)
@@ -34,14 +21,11 @@ class User:
 
 
 class Tweet:
-    def __init__(self, content: str, retweets_count: int = 0, tweet_created_at: datetime = None):
+    def __init__(self, content: str):
         self.content = content
-        # self.retweet_count = retweets_count
-        # self.tweet_created_at = tweet_created_at
 
     def find_mentioned_users(self):
-        mentions = re.findall(r"@(\w+)", self.content)
-        return mentions
+        return re.findall(r"@(\w+)", self.content)
 
 class Interaction:
     def __init__(self, user1: User, user2: User, tweet: Tweet = None):
