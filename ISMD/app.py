@@ -1,6 +1,5 @@
 import pandas as pd
 import streamlit as st
-
 from presenter import NetworkPresenter
 from utils import create_user_network
 
@@ -32,7 +31,7 @@ class App:
     def show_data_sample(self, df: pd.DataFrame) -> None:
         st.subheader("Raw Data Sample")
         st.dataframe(df.head())
-        
+
     def show_network(self) -> None:
         graph_html = self.network_presenter.visualize_network(self.top_neighbours_nodes)
         st.components.v1.html(graph_html, height=600, scrolling=True)
@@ -46,16 +45,13 @@ class App:
             communities_count[community_id] = communities_count.get(community_id, 0) + 1
 
         community_df = pd.DataFrame.from_dict(
-            communities_count,
-            orient='index',
-            columns=["Nodes in Community"]
+            communities_count, orient="index", columns=["Nodes in Community"]
         )
         community_df.index.name = "Community ID"
         st.dataframe(community_df.sort_values("Nodes in Community", ascending=False))
 
     def configure_graph(self) -> None:
-        nodes_count = self.dataframe.name.nunique()
-
+        nodes_count = len(self.dataframe)
         st.sidebar.subheader("Graph Configuration")
         max_nodes = st.sidebar.number_input(
             "Number of nodes for the graph (Enter below the total rows in data)",
@@ -83,6 +79,7 @@ class App:
         self.show_data_sample(self.dataframe)
         self.show_network()
         self.display_community_stats()
+
 
 if __name__ == "__main__":
     app = App()
