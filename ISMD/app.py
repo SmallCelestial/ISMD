@@ -34,7 +34,7 @@ class App:
 
     def show_network(self) -> None:
         graph_html = self.network_presenter.visualize_network(self.top_neighbours_nodes)
-        st.components.v1.html(graph_html, height=600, scrolling=True)
+        st.components.v1.html(graph_html, height=600, scrolling=False)
 
     def display_community_stats(self) -> None:
         partition = self.network_presenter.partition
@@ -67,6 +67,7 @@ class App:
         self.load_data(uploaded_file)
 
     def init_network(self):
+        # TODO to sampluje liczbe wierszy, jak jest inny df tzn. wiersz to nie uzytkownik to liczba nodów jest mniejsza
         sampled_df = self.dataframe.sample(self.max_nodes)
         self.user_network = create_user_network(sampled_df)
         self.network_presenter = NetworkPresenter(self.user_network)

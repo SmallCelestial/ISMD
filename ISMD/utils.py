@@ -12,7 +12,6 @@ def iterate_interactions(tweets: Iterable[Tweet]) -> Iterable[Interaction]:
 
 
 def create_user_network(df: pd.DataFrame) -> UserNetwork:
-    cols = df.columns
     if is_dataframe_with_content(df):
         return _create_user_network_by_content(df)
 
