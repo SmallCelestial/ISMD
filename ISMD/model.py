@@ -1,5 +1,6 @@
 import re
-from typing import List
+from dataclasses import dataclass
+from typing import List, Optional
 
 import networkx as nx
 from community import community_louvain
@@ -27,11 +28,13 @@ class Tweet:
     def find_mentioned_users(self):
         return re.findall(r"@(\w+)", self.content)
 
+
 class Interaction:
     def __init__(self, user1: User, user2: User, tweet: Tweet = None):
         self.user1 = user1
         self.user2 = user2
         self.tweet = tweet
+
 
 class UserNetwork:
     def __init__(self, users: List[User], interactions: List[Interaction] = None):
@@ -46,8 +49,15 @@ class UserNetwork:
         self.graph.add_nodes_from(users)
         for interaction in interactions:
             self.graph.add_edge(
-                interaction.user1,
-                interaction.user2,
-                tweet=interaction.tweet)
+                interaction.user1, interaction.user2, tweet=interaction.tweet
+            )
 
 
+@dataclass(frozen=True)
+class SocialInteraction:
+    who_id: str
+    to_whom_id: str
+    interaction_type: str
+    who_username: Optional[str]
+    to_whom_username: Optional[str]
+    item: Optional[str]
