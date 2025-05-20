@@ -1,10 +1,8 @@
+import matplotlib.colors as mcolors
 import networkx as nx
 from matplotlib import cm
-from pyvis.network import Network
-import matplotlib.colors as mcolors
-
-
 from model import UserNetwork
+from pyvis.network import Network
 
 
 class NetworkPresenter:
@@ -24,7 +22,13 @@ class NetworkPresenter:
 
     def create_network(self, graph: nx.Graph, partition: dict) -> Network:
 
-        net = Network(height="600px", width="100%", bgcolor="#222222", font_color="white", directed=False)
+        net = Network(
+            height="600px",
+            width="100%",
+            bgcolor="#222222",
+            font_color="white",
+            directed=False,
+        )
         cmap = cm.get_cmap("tab20", max(partition.values()) + 1)
 
         for node in graph.nodes():
@@ -39,10 +43,13 @@ class NetworkPresenter:
 
         return net
 
-
-    def get_subgraph_with_top_degree_vertices(self, number_of_top_vertices: int = 10) -> nx.Graph:
+    def get_subgraph_with_top_degree_vertices(
+        self, number_of_top_vertices: int = 10
+    ) -> nx.Graph:
         graph = self.user_network.graph
-        top_nodes_by_degree = sorted(graph, key=lambda node: graph.degree[node], reverse=True)[:number_of_top_vertices]
+        top_nodes_by_degree = sorted(
+            graph, key=lambda node: graph.degree[node], reverse=True
+        )[:number_of_top_vertices]
 
         subgraph_nodes = set(top_nodes_by_degree)
         for node in top_nodes_by_degree:
