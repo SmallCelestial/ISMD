@@ -4,6 +4,7 @@ from matplotlib import cm
 from pyvis.network import Network
 
 from src.app.model import UserNetwork
+from src.app.utils.constants import NodeSizeMetric
 
 
 class NetworkPresenter:
@@ -75,6 +76,37 @@ class NetworkPresenter:
             nodes_with_sizes[node] = self.__calculate_node_size(value, min_degree, max_degree)
 
         return nodes_with_sizes
+
+    def betweenness_centrality_metric(self, nodes) -> dict[str, float]:
+        centrality = nx.betweenness_centrality(self.user_network.graph)
+        min_val = min(centrality.values())
+        max_val = max(centrality.values())
+        return {node: self.__calculate_node_size(centrality[node], min_val, max_val) for node in nodes}
+
+    def closeness_centrality_metric(self, nodes) -> dict[str, float]:
+        centrality = nx.closeness_centrality(self.user_network.graph)
+        min_val = min(centrality.values())
+        max_val = max(centrality.values())
+        return {node: self.__calculate_node_size(centrality[node], min_val, max_val) for node in nodes}
+
+    def pagerank_metric(self, nodes) -> dict[str, float]:
+        centrality = nx.pagerank(self.user_network.graph)
+        min_val = min(centrality.values())
+        max_val = max(centrality.values())
+        return {node: self.__calculate_node_size(centrality[node], min_val, max_val) for node in nodes}
+
+    def set_metric(self, metric_name: str):
+        match metric_name:
+            case NodeSizeMetric.DEGREE:
+                self.metric = self.node_degree_metric
+            case NodeSizeMetric.BETWEENNESS:
+                self.metric = self.betweenness_centrality_metric
+            case NodeSizeMetric.CLOSENESS:
+                self.metric = self.closeness_centrality_metric
+            case NodeSizeMetric.PAGERANK:
+                self.metric = self.pagerank_metric
+            case _:
+                raise ValueError(f"Unknown metric: {metric_name}")
 
     def __calculate_node_size(self, value: int | float, min_value: int | float, max_value: int | float) -> float:
 

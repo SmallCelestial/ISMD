@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 
 from src.app.presenter.presenter import NetworkPresenter
+from src.app.utils.constants import NodeSizeMetric
 from src.app.utils.utils import create_user_network
 
 
@@ -49,7 +50,12 @@ class Dashboard:
         if self.df is not None and "max_nodes" in st.session_state:
             df = self.df.sample(st.session_state["max_nodes"])
             user_network = create_user_network(df)
-            st.session_state["network_presenter"] = NetworkPresenter(user_network)
+            presenter = NetworkPresenter(user_network)
+
+            metric_name = st.session_state.get("node_size_metric", NodeSizeMetric.DEGREE)
+            presenter.set_metric(metric_name)
+
+            st.session_state["network_presenter"] = presenter
 
     def _display_network(self):
         presenter = st.session_state.get("network_presenter")
