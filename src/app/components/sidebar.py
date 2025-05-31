@@ -2,12 +2,15 @@ import streamlit as st
 
 
 class Sidebar:
-    def __init__(self, on_load_file, on_display_graph):
+    def __init__(self, on_load_file, on_display_graph, on_display_data_sample):
+        self.view = "Data Exploration"
         self.default_file = "data/Tweets.csv"
         self.on_load_file = on_load_file
         self.on_display_graph = on_display_graph
+        self.on_display_data_sample = on_display_data_sample
         self.get_file()
-        self.display_configure_graph()
+        self.get_view_selector()
+        self.display_configure()
 
     def get_file(self):
         uploaded_file = st.sidebar.file_uploader("Upload Tweet CSV", type=["csv"])
@@ -18,6 +21,19 @@ class Sidebar:
             st.warning("No file uploaded yet. Used default one.")
 
         self.on_load_file()
+
+
+    def get_view_selector(self):
+        self.view = st.sidebar.radio(
+            "Select view:",
+            ("Data Exploration", "Graph Analysis")
+        )
+
+    def display_configure(self):
+        if self.view == "Data Exploration":
+            self.display_configure_exploration()
+        elif self.view == "Graph Analysis":
+            self.display_configure_graph()
 
     def display_configure_graph(self):
         if "dataframe" in st.session_state:
@@ -72,3 +88,7 @@ class Sidebar:
             st.session_state["node_size_metric"] = metric
 
             self.on_display_graph()
+
+    def display_configure_exploration(self):
+        self.on_display_data_sample()
+

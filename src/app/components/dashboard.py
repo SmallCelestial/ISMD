@@ -14,6 +14,8 @@ class Dashboard:
 
     def on_load_file(self):
         self._load_data()
+
+    def on_display_data_sample(self):
         self._show_data_sample()
 
     def on_display_graph(self):
