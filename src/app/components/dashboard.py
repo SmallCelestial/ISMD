@@ -1,8 +1,8 @@
 import pandas as pd
 import streamlit as st
 
-from app.presenter.presenter import NetworkPresenter
-from app.utils.utils import create_user_network
+from src.app.presenter.presenter import NetworkPresenter
+from src.app.utils.utils import create_user_network
 
 
 class Dashboard:

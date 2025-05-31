@@ -3,7 +3,7 @@ import networkx as nx
 from matplotlib import cm
 from pyvis.network import Network
 
-from app.model import UserNetwork
+from src.app.model import UserNetwork
 
 
 class NetworkPresenter:
