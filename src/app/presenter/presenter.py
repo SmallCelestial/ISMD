@@ -22,7 +22,9 @@ class NetworkPresenter:
         if top_neighbours_nodes is not None:
             graph = self.get_subgraph_with_top_degree_vertices(top_neighbours_nodes)
 
-        self.partition = UserNetwork.detect_communities(graph, algorithm, **params)
+        self.partition = self.user_network.detect_communities(
+            graph, algorithm, **params
+        )
         net = self.create_network(graph, self.partition)
 
         return net.generate_html()

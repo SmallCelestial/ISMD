@@ -42,15 +42,8 @@ class UserNetwork:
         self.graph = nx.Graph()
         self.__init_graph(users, interactions)
 
-    def get_min_degree(self):
-        return min(dict(self.graph.degree()).values())
-
-    def get_max_degree(self):
-        return max(dict(self.graph.degree()).values())
-
-    @staticmethod
     def detect_communities(
-        graph: nx.Graph, method: str = "louvain", **kwargs
+        self, graph: nx.Graph, method: str = "louvain", **kwargs
     ) -> Dict[Any, int]:
 
         method = method.lower()
@@ -88,6 +81,13 @@ class UserNetwork:
             }
         else:
             raise ValueError(f"Unknown community detection method: {method}")
+
+    def get_network_graph_centrality_stats(self):
+        return {
+            "degree": nx.degree_centrality(self.graph),
+            "closeness": nx.closeness_centrality(self.graph),
+            "betweenness": nx.betweenness_centrality(self.graph),
+        }
 
     def __init_graph(self, users: List[User], interactions: List[Interaction]):
         self.graph.add_nodes_from(users)
