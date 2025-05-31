@@ -1,8 +1,9 @@
 import matplotlib.colors as mcolors
 import networkx as nx
 from matplotlib import cm
-from model import UserNetwork
 from pyvis.network import Network
+
+from app.model import UserNetwork
 
 
 class NetworkPresenter:

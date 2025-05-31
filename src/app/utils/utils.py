@@ -1,8 +1,9 @@
 from typing import Iterable
 
-import df_parser
 import pandas as pd
-from model import Interaction, Tweet, User, UserNetwork
+
+import app.utils.df_parser as df_parser
+from app.model import Interaction, Tweet, User, UserNetwork
 
 
 def iterate_interactions(tweets: Iterable[Tweet]) -> Iterable[Interaction]:
