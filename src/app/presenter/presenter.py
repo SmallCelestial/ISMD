@@ -15,18 +15,19 @@ class NetworkPresenter:
         self.max_node_size = max_node_size
         self.metric = self.node_degree_metric
 
-    def visualize_network(self, top_neighbours_nodes=None) -> str:
+    def visualize_network(
+        self, params, top_neighbours_nodes=None, algorithm: str = "louvain"
+    ) -> str:
         graph = self.user_network.graph
         if top_neighbours_nodes is not None:
             graph = self.get_subgraph_with_top_degree_vertices(top_neighbours_nodes)
 
-        self.partition = UserNetwork.detect_communities(graph)
+        self.partition = UserNetwork.detect_communities(graph, algorithm, **params)
         net = self.create_network(graph, self.partition)
 
         return net.generate_html()
 
     def create_network(self, graph: nx.Graph, partition: dict) -> Network:
-
         net = Network(
             height="600px",
             width="100%",
