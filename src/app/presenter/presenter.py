@@ -8,7 +8,9 @@ from src.app.utils.constants import NodeSizeMetric
 
 
 class NetworkPresenter:
-    def __init__(self, user_network: UserNetwork, min_node_size: int = 5, max_node_size: int = 20):
+    def __init__(
+        self, user_network: UserNetwork, min_node_size: int = 5, max_node_size: int = 20
+    ):
         self.user_network = user_network
         self.partition = None
         self.min_node_size = min_node_size
@@ -22,7 +24,9 @@ class NetworkPresenter:
         if top_neighbours_nodes is not None:
             graph = self.get_subgraph_with_top_degree_vertices(top_neighbours_nodes)
 
-        self.partition = UserNetwork.detect_communities(graph, algorithm, **params)
+        self.partition = self.user_network.detect_communities(
+            graph, algorithm, **params
+        )
         net = self.create_network(graph, self.partition)
 
         return net.generate_html()
@@ -54,7 +58,7 @@ class NetworkPresenter:
         return net
 
     def get_subgraph_with_top_degree_vertices(
-            self, number_of_top_vertices: int = 10
+        self, number_of_top_vertices: int = 10
     ) -> nx.Graph:
         graph = self.user_network.graph
         top_nodes_by_degree = sorted(
@@ -74,42 +78,61 @@ class NetworkPresenter:
         nodes_with_sizes = dict()
         for node in nodes:
             value = self.user_network.graph.degree[node]
-            nodes_with_sizes[node] = self.__calculate_node_size(value, min_degree, max_degree)
+            nodes_with_sizes[node] = self.__calculate_node_size(
+                value, min_degree, max_degree
+            )
 
         return nodes_with_sizes
 
-    def betweenness_centrality_metric(self, nodes) -> dict[str, float]:
-        centrality = nx.betweenness_centrality(self.user_network.graph)
+    def betweenness_centrality_metric(self, nodes, centrality) -> dict[str, float]:
         min_val = min(centrality.values())
         max_val = max(centrality.values())
-        return {node: self.__calculate_node_size(centrality[node], min_val, max_val) for node in nodes}
+        return {
+            node: self.__calculate_node_size(centrality[node], min_val, max_val)
+            for node in nodes
+        }
 
-    def closeness_centrality_metric(self, nodes) -> dict[str, float]:
-        centrality = nx.closeness_centrality(self.user_network.graph)
-        min_val = min(centrality.values())
-        max_val = max(centrality.values())
-        return {node: self.__calculate_node_size(centrality[node], min_val, max_val) for node in nodes}
+    def closeness_centrality_metric(self, nodes, closeness) -> dict[str, float]:
+        min_val = min(closeness.values())
+        max_val = max(closeness.values())
+        return {
+            node: self.__calculate_node_size(closeness[node], min_val, max_val)
+            for node in nodes
+        }
 
-    def pagerank_metric(self, nodes) -> dict[str, float]:
-        centrality = nx.pagerank(self.user_network.graph)
-        min_val = min(centrality.values())
-        max_val = max(centrality.values())
-        return {node: self.__calculate_node_size(centrality[node], min_val, max_val) for node in nodes}
+    def pagerank_metric(self, nodes, pagerank) -> dict[str, float]:
+        min_val = min(pagerank.values())
+        max_val = max(pagerank.values())
+        return {
+            node: self.__calculate_node_size(pagerank[node], min_val, max_val)
+            for node in nodes
+        }
 
     def set_metric(self, metric_name: str):
+        graph_stats = self.user_network.get_network_graph_stats()
         match metric_name:
             case NodeSizeMetric.DEGREE:
                 self.metric = self.node_degree_metric
             case NodeSizeMetric.BETWEENNESS:
-                self.metric = self.betweenness_centrality_metric
+                self.metric = lambda nodes: self.betweenness_centrality_metric(
+                    nodes, centrality=graph_stats["betweenness_centrality"]
+                )
             case NodeSizeMetric.CLOSENESS:
-                self.metric = self.closeness_centrality_metric
+                self.metric = lambda nodes: self.closeness_centrality_metric(
+                    nodes, closeness=graph_stats["closeness_centrality"]
+                )
             case NodeSizeMetric.PAGERANK:
-                self.metric = self.pagerank_metric
+                self.metric = lambda nodes: self.pagerank_metric(
+                    nodes, pagerank=graph_stats["pagerank"]
+                )
             case _:
                 raise ValueError(f"Unknown metric: {metric_name}")
 
-    def __calculate_node_size(self, value: int | float, min_value: int | float, max_value: int | float) -> float:
+    def __calculate_node_size(
+        self, value: int | float, min_value: int | float, max_value: int | float
+    ) -> float:
 
         scaler = self.max_node_size - self.min_node_size
-        return self.min_node_size + (value - min_value) / (max_value - min_value) * scaler
+        return (
+            self.min_node_size + (value - min_value) / (max_value - min_value) * scaler
+        )

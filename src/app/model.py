@@ -48,9 +48,8 @@ class UserNetwork:
     def get_max_degree(self):
         return max(dict(self.graph.degree()).values())
 
-    @staticmethod
     def detect_communities(
-        graph: nx.Graph, method: str = "louvain", **kwargs
+        self, graph: nx.Graph, method: str = "louvain", **kwargs
     ) -> Dict[Any, int]:
 
         method = method.lower()
@@ -88,6 +87,38 @@ class UserNetwork:
             }
         else:
             raise ValueError(f"Unknown community detection method: {method}")
+
+    def get_network_graph_stats(self):
+        """
+        Compute various graph metrics for each node in the network.
+
+        Returns:
+            dict: A dictionary containing the following metrics:
+
+            - "pagerank" (dict): The PageRank score of each node, representing the importance of a node
+            based on its connections.
+            - "degree_centrality" (dict): The degree centrality of each node, calculated as the number of direct connections
+            a node has, normalized by the maximum possible connections.
+            - "closeness_centrality" (dict): The closeness centrality of each node, indicating how close a node is to all
+            other nodes in terms of the shortest paths. Higher values mean the node can reach others more efficiently.
+            - "betweenness_centrality" (dict): The betweenness centrality of each node, showing how often a node lies on the
+            shortest paths between other pairs of nodes. High values indicate "bridge" nodes in the network.
+            - "triadic_closure" (dict): The number of triangles (3-node fully connected subgraphs) a node is part of.
+            Triangles are a key indicator of social clustering or tight-knit groups.
+            - "clustering_coefficient" (dict): The local clustering coefficient of each node, representing the likelihood
+            that a node's neighbors are also connected to each other. Values range from 0 (no clustering) to 1 (fully connected neighbors).
+
+        These metrics provide insights into the structure of the network, identifying important nodes, tightly-knit communities,
+        and the overall connectivity of the graph.
+        """
+        return {
+            "pagerank": nx.pagerank(self.graph),
+            "degree_centrality": nx.degree_centrality(self.graph),
+            "closeness_centrality": nx.closeness_centrality(self.graph),
+            "betweenness_centrality": nx.betweenness_centrality(self.graph),
+            "triadic_closure": nx.triangles(self.graph),
+            "clustering_coefficient": nx.clustering(self.graph),
+        }
 
     def __init_graph(self, users: List[User], interactions: List[Interaction]):
         self.graph.add_nodes_from(users)
