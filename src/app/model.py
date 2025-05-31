@@ -50,7 +50,6 @@ class UserNetwork:
         method = method.lower()
 
         if method == "louvain":
-            print(kwargs.get("resolution", 1.0))
             return community_louvain.best_partition(
                 graph,
                 partition=kwargs.get("partition", None),
