@@ -1,7 +1,7 @@
 ## TODO:
 ## 1. Parametryzacja i konfiguracja analizy społeczności
-- Umożliwienie wyboru różnych algorytmów wykrywania społeczności (np. Louvain, Girvan-Newman, Label Propagation).
-- Dostosowywanie parametrów algorytmów przez użytkownika (np. graniczna liczba społeczności, poziom modularności).
+- Umożliwienie wyboru różnych algorytmów wykrywania społeczności (np. Louvain, Girvan-Newman, Label Propagation). DONE
+- Dostosowywanie parametrów algorytmów przez użytkownika (np. graniczna liczba społeczności, poziom modularności). DONE
 
 ## 2. Optymalizacja wyświetlania grafu
 - Możliwość regulacji wielkości wierzchołków w zależności od wybranej metryki (np. liczba interakcji, stopień w grafie). DONE
@@ -11,9 +11,9 @@
 
 ## 3. Analiza i rozszerzenia grafowe
 - Zastosowanie dodatkowych algorytmów analizy grafu, np.:
-  - centralności (degree, closeness, betweenness),
-  - wykrywanie kluczowych węzłów (influencerów),
-  - analiza spójności i struktur lokalnych (np. triady, motywy).
+  - centralności (degree, closeness, betweenness), DONE
+  - wykrywanie kluczowych węzłów (influencerów), DONE
+  - analiza spójności i struktur lokalnych (np. triady, motywy). DONE
 
 ## 4. Organizacja interfejsu
 - Oddzielenie widoków:
