@@ -41,6 +41,12 @@ class UserNetwork:
         self.graph = nx.Graph()
         self.__init_graph(users, interactions)
 
+    def get_min_degree(self):
+        return min(dict(self.graph.degree()).values())
+
+    def get_max_degree(self):
+        return max(dict(self.graph.degree()).values())
+
     @staticmethod
     def detect_communities(graph: nx.Graph) -> dict[User, int]:
         return community_louvain.best_partition(graph)
