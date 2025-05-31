@@ -54,7 +54,11 @@ class Dashboard:
     def _display_network(self):
         presenter = st.session_state.get("network_presenter")
         if presenter:
-            graph_html = presenter.visualize_network(st.session_state["max_nodes"])
+            graph_html = presenter.visualize_network(
+                top_neighbours_nodes=st.session_state["max_nodes"],
+                algorithm=st.session_state["community_algorithm"],
+                params=st.session_state["community_params"],
+            )
             st.components.v1.html(graph_html, height=600, scrolling=False)
 
     def _display_community_stats(self):
