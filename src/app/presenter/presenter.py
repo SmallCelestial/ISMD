@@ -4,12 +4,16 @@ from matplotlib import cm
 from pyvis.network import Network
 
 from src.app.model import UserNetwork
+from src.app.utils.constants import NodeSizeMetric
 
 
 class NetworkPresenter:
-    def __init__(self, user_network: UserNetwork):
+    def __init__(self, user_network: UserNetwork, min_node_size: int = 5, max_node_size: int = 20):
         self.user_network = user_network
         self.partition = None
+        self.min_node_size = min_node_size
+        self.max_node_size = max_node_size
+        self.metric = self.node_degree_metric
 
     def visualize_network(
         self, params, top_neighbours_nodes=None, algorithm: str = "louvain"
@@ -33,10 +37,14 @@ class NetworkPresenter:
         )
         cmap = cm.get_cmap("tab20", max(partition.values()) + 1)
 
-        for node in graph.nodes():
+        nodes_with_sizes = self.metric(graph.nodes())
+        for node, size in nodes_with_sizes.items():
             group = partition.get(node, 0)
             color = mcolors.to_hex(cmap(group))
-            net.add_node(str(node), label=str(node), color=color)
+
+            net.add_node(str(node), label=str(node), color=color, size=size)
+
+            # net.add_node(str(node), label=str(node), color=color)
 
         for source, target in graph.edges():
             net.add_edge(str(source), str(target))
@@ -46,7 +54,7 @@ class NetworkPresenter:
         return net
 
     def get_subgraph_with_top_degree_vertices(
-        self, number_of_top_vertices: int = 10
+            self, number_of_top_vertices: int = 10
     ) -> nx.Graph:
         graph = self.user_network.graph
         top_nodes_by_degree = sorted(
@@ -58,3 +66,50 @@ class NetworkPresenter:
             subgraph_nodes.update(graph.neighbors(node))
 
         return graph.subgraph(subgraph_nodes)
+
+    def node_degree_metric(self, nodes) -> dict[str, float]:
+        min_degree = self.user_network.get_min_degree()
+        max_degree = self.user_network.get_max_degree()
+
+        nodes_with_sizes = dict()
+        for node in nodes:
+            value = self.user_network.graph.degree[node]
+            nodes_with_sizes[node] = self.__calculate_node_size(value, min_degree, max_degree)
+
+        return nodes_with_sizes
+
+    def betweenness_centrality_metric(self, nodes) -> dict[str, float]:
+        centrality = nx.betweenness_centrality(self.user_network.graph)
+        min_val = min(centrality.values())
+        max_val = max(centrality.values())
+        return {node: self.__calculate_node_size(centrality[node], min_val, max_val) for node in nodes}
+
+    def closeness_centrality_metric(self, nodes) -> dict[str, float]:
+        centrality = nx.closeness_centrality(self.user_network.graph)
+        min_val = min(centrality.values())
+        max_val = max(centrality.values())
+        return {node: self.__calculate_node_size(centrality[node], min_val, max_val) for node in nodes}
+
+    def pagerank_metric(self, nodes) -> dict[str, float]:
+        centrality = nx.pagerank(self.user_network.graph)
+        min_val = min(centrality.values())
+        max_val = max(centrality.values())
+        return {node: self.__calculate_node_size(centrality[node], min_val, max_val) for node in nodes}
+
+    def set_metric(self, metric_name: str):
+        match metric_name:
+            case NodeSizeMetric.DEGREE:
+                self.metric = self.node_degree_metric
+            case NodeSizeMetric.BETWEENNESS:
+                self.metric = self.betweenness_centrality_metric
+            case NodeSizeMetric.CLOSENESS:
+                self.metric = self.closeness_centrality_metric
+            case NodeSizeMetric.PAGERANK:
+                self.metric = self.pagerank_metric
+            case _:
+                raise ValueError(f"Unknown metric: {metric_name}")
+
+    def __calculate_node_size(self, value: int | float, min_value: int | float, max_value: int | float) -> float:
+
+        scaler = self.max_node_size - self.min_node_size
+        return self.min_node_size + (value - min_value) / (max_value - min_value) * scaler
