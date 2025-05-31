@@ -20,6 +20,7 @@ class Dashboard:
         self._init_network()
         self._display_network()
         self._display_community_stats()
+        self._display_graph_metrics()
 
     def _load_data(self):
         uploaded_file = st.session_state.get("uploaded_file")
@@ -52,7 +53,9 @@ class Dashboard:
             user_network = create_user_network(df)
             presenter = NetworkPresenter(user_network)
 
-            metric_name = st.session_state.get("node_size_metric", NodeSizeMetric.DEGREE)
+            metric_name = st.session_state.get(
+                "node_size_metric", NodeSizeMetric.DEGREE
+            )
             presenter.set_metric(metric_name)
 
             st.session_state["network_presenter"] = presenter
@@ -66,6 +69,40 @@ class Dashboard:
                 params=st.session_state["community_params"],
             )
             st.components.v1.html(graph_html, height=600, scrolling=False)
+
+    def _display_graph_metrics(self):
+        presenter = st.session_state.get("network_presenter")
+        if presenter:
+            network = presenter.user_network
+            stats = network.get_network_graph_stats()
+            users = [node for node in network.graph.nodes()]
+
+            data = []
+            for user in users:
+                data.append(
+                    {
+                        "User": user.name,
+                        "Degree Centrality": round(
+                            stats["degree_centrality"].get(user, 0), 4
+                        ),
+                        "Closeness Centrality": round(
+                            stats["closeness_centrality"].get(user, 0), 4
+                        ),
+                        "Betweenness Centrality": round(
+                            stats["betweenness_centrality"].get(user, 0), 4
+                        ),
+                        "Triads": stats["triadic_closure"].get(user, 0),
+                        "Clustering Coefficient": round(
+                            stats["clustering_coefficient"].get(user, 0), 4
+                        ),
+                    }
+                )
+
+            df = pd.DataFrame(data)
+            df = df.sort_values("Degree Centrality", ascending=False)
+
+            st.subheader("User Network Metrics")
+            st.dataframe(df, use_container_width=True)
 
     def _display_community_stats(self):
         presenter = st.session_state.get("network_presenter")
