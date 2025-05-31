@@ -8,4 +8,5 @@ class App:
         self.side_bar = Sidebar(
             on_load_file=self.dashboard.on_load_file,
             on_display_graph=self.dashboard.on_display_graph,
+            on_display_data_sample=self.dashboard.on_display_data_sample
         )

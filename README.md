@@ -4,8 +4,8 @@
 - Dostosowywanie parametrów algorytmów przez użytkownika (np. graniczna liczba społeczności, poziom modularności).
 
 ## 2. Optymalizacja wyświetlania grafu
-- Możliwość regulacji wielkości wierzchołków w zależności od wybranej metryki (np. liczba interakcji, stopień w grafie).
-- Ograniczenie liczby wierzchołków/połączeń wyświetlanych jednocześnie w celu zwiększenia przejrzystości i wydajności. Ustawienie maksymalnej liczby do takiego poziomu, żeby nie zabijał funkcjonalności strony.
+- Możliwość regulacji wielkości wierzchołków w zależności od wybranej metryki (np. liczba interakcji, stopień w grafie). DONE
+- Ograniczenie liczby wierzchołków/połączeń wyświetlanych jednocześnie w celu zwiększenia przejrzystości i wydajności. Ustawienie maksymalnej liczby do takiego poziomu, żeby nie zabijał funkcjonalności strony. DONE
 - Wstępne filtrowanie i redukcja danych przy wczytywaniu (np. najaktywniejsze konta, interakcje powyżej progu).
 - Optymalizacja czasu wczytywania danych i renderowania grafu.
 
@@ -17,8 +17,8 @@
 
 ## 4. Organizacja interfejsu
 - Oddzielenie widoków:
-  - dedykowany widok do eksploracji i porównywania różnych zbiorów danych,
-  - oddzielny widok do analizy i wizualizacji grafu konkretnego zbioru.
+  - dedykowany widok do eksploracji i porównywania różnych zbiorów danych, DONE
+  - oddzielny widok do analizy i wizualizacji grafu konkretnego zbioru. DONE
 
 ## 5. Wizualizacja treści i embedding (Dodatkowo)
 - Osadzenie tweetów w przestrzeni wektorowej za pomocą metod typu t-SNE lub UMAP.
