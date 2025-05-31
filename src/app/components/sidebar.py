@@ -30,6 +30,38 @@ class Sidebar:
                 value=st.session_state.get("max_nodes", min(100, nodes_count)),
                 step=1,
             )
+
+            algorithm = st.sidebar.selectbox(
+                "Select community detection algorithm",
+                ["Louvain", "Label Propagation", "Girvan Newman"],
+            )
+            algo_params = {}
+
+            if algorithm == "Louvain":
+                resolution = st.sidebar.number_input(
+                    "Resolution (Louvain)",
+                    value=1.0,
+                    min_value=0.1,
+                    max_value=5.0,
+                    step=0.1,
+                )
+                algo_params["resolution"] = resolution
+
+            elif algorithm == "Girvan Newman":
+                max_communities = st.sidebar.number_input(
+                    "Max number of communities (Girvan-Newman)",
+                    value=5,
+                    min_value=2,
+                    max_value=50,
+                    step=1,
+                )
+                algo_params["max_communities"] = max_communities
+
+            elif algorithm == "Label Propagation":
+                st.sidebar.info("No extra parameters for Label Propagation.")
+
+            st.session_state["community_algorithm"] = algorithm
+            st.session_state["community_params"] = algo_params
             st.session_state["max_nodes"] = max_nodes
 
             self.on_display_graph()
