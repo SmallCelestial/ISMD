@@ -66,7 +66,6 @@ class Sidebar:
 
             metric = st.sidebar.selectbox(
                 "Metric for node size",
-                # options=["Degree"],
                 options=["Degree", "Betweenness", "Closeness", "PageRank"],
                 index=0,
             )
