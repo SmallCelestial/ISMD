@@ -1,7 +1,8 @@
 from typing import Iterable
 
 import pandas as pd
-from model import SocialInteraction, Tweet, User
+
+from app.model import SocialInteraction, Tweet, User
 
 _EXPECTED_COLUMNS = ["who", "to_whom", "interaction_type"]
 
