@@ -1,5 +1,5 @@
-from app.components.dashboard import Dashboard
-from app.components.siderbar import Sidebar
+from src.app.components.dashboard import Dashboard
+from src.app.components.sidebar import Sidebar
 
 
 class App:
