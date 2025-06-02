@@ -2,12 +2,12 @@ import streamlit as st
 
 
 class Sidebar:
-    def __init__(self, on_load_file, on_display_graph, on_display_data_sample):
+    def __init__(self, on_load_file, on_display_graph, on_display_exploration_view):
         self.view = "Data Exploration"
         self.default_file = "data/Tweets.csv"
         self.on_load_file = on_load_file
         self.on_display_graph = on_display_graph
-        self.on_display_data_sample = on_display_data_sample
+        self.on_display_exploration_view = on_display_exploration_view
         self.get_file()
         self.get_view_selector()
         self.display_configure()
@@ -90,5 +90,5 @@ class Sidebar:
             self.on_display_graph()
 
     def display_configure_exploration(self):
-        self.on_display_data_sample()
+        self.on_display_exploration_view()
 
