@@ -1,5 +1,8 @@
 import pandas as pd
 import streamlit as st
+from collections import Counter
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
 
 from src.app.presenter.presenter import NetworkPresenter
 from src.app.utils.constants import NodeSizeMetric
@@ -15,14 +18,73 @@ class Dashboard:
     def on_load_file(self):
         self._load_data()
 
-    def on_display_data_sample(self):
-        self._show_data_sample()
 
     def on_display_graph(self):
         self._init_network()
         self._display_network()
         self._display_community_stats()
         self._display_graph_metrics()
+
+    def on_display_exploration_view(self):
+        # TODO: fix columns types
+        self._show_data_sample()
+        self._show_data_description()
+        self._show_data_columns_types()
+        self._show_data_missing_values()
+        self._show_data_distribution()
+        self._show_tweet_frequency_over_time()
+        self._show_text_analysis()
+        self._let_filter_data()
+
+    def _show_data_description(self):
+        st.subheader("Summary Statistics")
+        st.write(self.df.describe(include='all'))
+
+    def _show_data_columns_types(self):
+        st.subheader("Column Data Types")
+        st.write(self.df.dtypes)
+
+    def _show_data_missing_values(self):
+        st.subheader("Missing Values Per Column")
+        missing = self.df.isnull().sum()
+        missing = missing[missing > 0]
+        if not missing.empty:
+            st.bar_chart(missing)
+        else:
+            st.success("No missing values detected.")
+
+    def _show_data_distribution(self):
+        st.subheader("Top Users by Tweet Count")
+        st.bar_chart(self.df['name'].value_counts().head(10))
+
+    def _show_tweet_frequency_over_time(self):
+        self.df['tweet_created'] = pd.to_datetime(self.df['tweet_created'])
+        time_series = self.df.groupby(self.df['tweet_created'].dt.date).size()
+
+        st.subheader("Tweet Frequency Over Time")
+        st.line_chart(time_series)
+
+    def _show_text_analysis(self):
+        st.subheader("Most Common Words in Tweets")
+        text_data = " ".join(self.df['text'].dropna())
+        word_freq = Counter(text_data.lower().split())
+        common_words = dict(word_freq.most_common(50))
+        wordcloud = WordCloud(width=800, height=400).generate_from_frequencies(common_words)
+
+        fig, ax = plt.subplots()
+        ax.imshow(wordcloud, interpolation='bilinear')
+        ax.axis("off")
+        st.pyplot(fig)
+
+    def _let_filter_data(self):
+        st.subheader("Filter by User")
+        users = st.multiselect("Select users", options=self.df['name'].unique())
+
+        filtered_df = self.df
+        if users:
+            filtered_df = filtered_df[filtered_df['name'].isin(users)]
+
+        st.dataframe(filtered_df)
 
     def _load_data(self):
         uploaded_file = st.session_state.get("uploaded_file")
