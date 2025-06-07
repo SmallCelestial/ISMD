@@ -62,19 +62,6 @@ class Dashboard:
         st.subheader("Tweet Frequency Over Time")
         st.line_chart(time_series)
 
-    # def _show_text_analysis(self, starts_with: str = "@"):
-    #     st.subheader("Most Common Words in Tweets")
-    #     text_data = " ".join(self.df['text'].dropna())
-    #     word_freq = Counter(text_data.lower().split())
-    #     common_words = dict(word_freq.most_common(50))
-    #     wordcloud = WordCloud(width=800, height=400).generate_from_frequencies(
-    #         common_words)
-    #
-    #     fig, ax = plt.subplots()
-    #     ax.imshow(wordcloud, interpolation='bilinear')
-    #     ax.axis("off")
-    #     st.pyplot(fig)
-
     def _show_text_analysis(self, starts_with: str = "#"):
         st.subheader("Most Common Words in Tweets")
         text_data = " ".join(self.df['text'].dropna())
