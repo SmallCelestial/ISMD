@@ -18,7 +18,6 @@ class Dashboard:
     def on_load_file(self):
         self._load_data()
 
-
     def on_display_graph(self):
         self._init_network()
         self._display_network()
@@ -26,7 +25,6 @@ class Dashboard:
         self._display_graph_metrics()
 
     def on_display_exploration_view(self):
-        # TODO: fix columns types
         self._show_data_sample()
         self._show_data_description()
         self._show_data_columns_types()
@@ -69,7 +67,8 @@ class Dashboard:
         text_data = " ".join(self.df['text'].dropna())
         word_freq = Counter(text_data.lower().split())
         common_words = dict(word_freq.most_common(50))
-        wordcloud = WordCloud(width=800, height=400).generate_from_frequencies(common_words)
+        wordcloud = WordCloud(width=800, height=400).generate_from_frequencies(
+            common_words)
 
         fig, ax = plt.subplots()
         ax.imshow(wordcloud, interpolation='bilinear')
@@ -176,7 +175,7 @@ class Dashboard:
             communities_count = {}
             for _, community_id in partition.items():
                 communities_count[community_id] = (
-                    communities_count.get(community_id, 0) + 1
+                        communities_count.get(community_id, 0) + 1
                 )
 
             community_df = pd.DataFrame.from_dict(
