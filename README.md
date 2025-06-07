@@ -1,25 +1,30 @@
-## TODO:
-## 1. Parametryzacja i konfiguracja analizy społeczności
-- Umożliwienie wyboru różnych algorytmów wykrywania społeczności (np. Louvain, Girvan-Newman, Label Propagation). DONE
-- Dostosowywanie parametrów algorytmów przez użytkownika (np. graniczna liczba społeczności, poziom modularności). DONE
+# 📊 Interactive Social Media Dashboard
 
-## 2. Optymalizacja wyświetlania grafu
-- Możliwość regulacji wielkości wierzchołków w zależności od wybranej metryki (np. liczba interakcji, stopień w grafie). DONE
-- Ograniczenie liczby wierzchołków/połączeń wyświetlanych jednocześnie w celu zwiększenia przejrzystości i wydajności. Ustawienie maksymalnej liczby do takiego poziomu, żeby nie zabijał funkcjonalności strony. DONE
-- Wstępne filtrowanie i redukcja danych przy wczytywaniu (np. najaktywniejsze konta, interakcje powyżej progu).
-- Optymalizacja czasu wczytywania danych i renderowania grafu.
+An interactive dashboard built with **Streamlit** that allows users to explore and analyze interactions on social media platforms such as **Twitter** or **Facebook**. The application supports visualization of user interactions, identification of communities, and exploration of network structures using graph analysis techniques.
 
-## 3. Analiza i rozszerzenia grafowe
-- Zastosowanie dodatkowych algorytmów analizy grafu, np.:
-  - centralności (degree, closeness, betweenness), DONE
-  - wykrywanie kluczowych węzłów (influencerów), DONE
-  - analiza spójności i struktur lokalnych (np. triady, motywy). DONE
+## 🚀 Features
 
-## 4. Organizacja interfejsu
-- Oddzielenie widoków:
-  - dedykowany widok do eksploracji i porównywania różnych zbiorów danych, DONE
-  - oddzielny widok do analizy i wizualizacji grafu konkretnego zbioru. DONE
+- 🔎 **Interactive Exploration**: Navigate through social media interaction data using an intuitive interface.
+- 👥 **Community Detection**: Identify and analyze different user communities within the network.
+- 🌐 **Graph Visualization**: Visualize relationships and interactions using traditional graph-based methods (e.g., force-directed graphs).
+- 📂 **Dataset Support**: Easily load datasets from platforms like [Kaggle](https://www.kaggle.com/) or [Hugging Face](https://huggingface.co/).
+- 📉 **Metrics & Insights**: View summary statistics and network metrics (e.g., degree centrality, betweenness, modularity).
 
-## 5. Wizualizacja treści i embedding (Dodatkowo)
-- Osadzenie tweetów w przestrzeni wektorowej za pomocą metod typu t-SNE lub UMAP.
-- Jednorazowe wykonanie embeddingu, zapisanie wyników jako pliku binarnego (np. `.npz`, `.pkl`) w celu przyspieszenia ponownego wczytania.
+## 🛠️ Technologies Used
+
+- [Streamlit](https://streamlit.io/) – for building the web app interface
+- [NetworkX](https://networkx.org/) – for network analysis and graph processing
+- [Plotly](https://plotly.com/) / [Pyvis](https://pyvis.readthedocs.io/) – for interactive graph visualization
+- [Pandas](https://pandas.pydata.org/) – for data manipulation
+
+## 📁 Datasets
+
+You can find and use interaction/network datasets from:
+
+- [Kaggle Datasets](https://www.kaggle.com/datasets)
+- [Hugging Face Datasets](https://huggingface.co/datasets)
+
+Example datasets:
+- Twitter Retweet/Reply Graphs
+- Facebook Page-Page Networks
+- Reddit Comment Interaction Trees
