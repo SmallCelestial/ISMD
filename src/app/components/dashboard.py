@@ -47,6 +47,7 @@ class Dashboard:
         st.subheader("Missing Values Per Column")
         missing = self.df.isnull().sum()
         missing = missing[missing > 0]
+
         if not missing.empty:
             st.bar_chart(missing)
         else:
@@ -72,7 +73,8 @@ class Dashboard:
         word_freq = Counter(text_data.lower().split())
 
         filtered_freq = {
-            word: freq for word, freq in word_freq.items()
+            word: freq
+            for word, freq in word_freq.items()
             if word.startswith(starts_with)
         }
 
@@ -95,7 +97,7 @@ class Dashboard:
         if users:
             filtered_df = filtered_df[filtered_df["name"].isin(users)]
 
-        st.dataframe(filtered_df)
+        st.dataframe(filtered_df, use_container_width=True)
 
     def _load_data(self):
         uploaded_file = st.session_state.get("uploaded_file")

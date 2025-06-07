@@ -22,11 +22,9 @@ class Sidebar:
 
         self.on_load_file()
 
-
     def get_view_selector(self):
         self.view = st.sidebar.radio(
-            "Select view:",
-            ("Data Exploration", "Graph Analysis")
+            "Select view:", ("Data Exploration", "Graph Analysis")
         )
 
     def display_configure(self):
@@ -42,7 +40,7 @@ class Sidebar:
             max_nodes = st.sidebar.number_input(
                 "Number of nodes for the graph (Enter below the total rows in data)",
                 min_value=1,
-                max_value=min(250, nodes_count),
+                max_value=min(1000, nodes_count),
                 value=st.session_state.get("max_nodes", min(100, nodes_count)),
                 step=1,
             )
@@ -91,4 +89,3 @@ class Sidebar:
 
     def display_configure_exploration(self):
         self.on_display_exploration_view()
-
