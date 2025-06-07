@@ -1,6 +1,6 @@
 # Report: **Interactive Social Media Dashboard – Twitter Data Analysis**
 
-## Part I: Application Description
+# Part I: Application Description
 
 ### 1. Introduction
 
@@ -34,11 +34,34 @@ Methods applied:
 - Identification of key nodes
 - Analysis of local structures and network cohesion
 
+
+### 4. Limitations
+
+- Incomplete interaction data (e.g., lack of replies and quote tweets)
+- A small percentage of tweets contain geolocation information
+- Potential errors in sentiment classification (e.g., sarcasm)
+- The dataset is outdated, with most tweets from several years ago
+
+### 5. Future Improvements
+
+- Integrate the application with the **Twitter API** to enable real-time data analysis
+- Expand the dashboard to include other platforms (e.g., Facebook, Reddit)
+- Apply modern NLP models (e.g., **BERT**, **RoBERTa**) for better sentiment and context analysis
+- Implement more advanced graph models (e.g., Graph Neural Networks)
+
+### 6. Attachments
+
+- [GitHub Repository with Application Code](https://github.com/SmallCelestial/ISMD)
+- Data Source: [Kaggle – Twitter US Airline Sentiment](https://www.kaggle.com/datasets/crowdflower/twitter-airline-sentiment)
+
+
 ---
 
-## Part II: Data Analysis
+# Part II: Data Analysis Examples
 
-### 4. Dataset Description
+## Example 1: Twitter US Airline Sentiment
+
+### Dataset Description
 
 The data was sourced from **Kaggle** and consists of tweets containing opinions about several U.S. airline companies. The dataset includes the following columns:
 
@@ -55,7 +78,7 @@ The data was sourced from **Kaggle** and consists of tweets containing opinions 
 
 The dataset includes over **11,000 tweets**, mostly from around March 2015.
 
-### 5. Exploratory Data Analysis (EDA)
+### Exploratory Data Analysis (EDA)
 
 #### Sentiment Analysis
 
@@ -94,7 +117,7 @@ This is visualized in the interaction graph below:
 
 ![interaction graph](graph.png)
 
-### 6. Conclusions
+### Conclusions
 
 - The majority of tweets expressed **negative sentiment**, indicating that Twitter is often used to voice dissatisfaction.
 - The most common complaints concerned customer service and flight delays.
@@ -102,21 +125,16 @@ This is visualized in the interaction graph below:
 - The interactive application enables dynamic analysis accessible even to non-technical users.
 - A basic graph analysis revealed several highly influential users with broad reach.
 
-### 7. Limitations
 
-- Incomplete interaction data (e.g., lack of replies and quote tweets)
-- A small percentage of tweets contain geolocation information
-- Potential errors in sentiment classification (e.g., sarcasm)
-- The dataset is outdated, with most tweets from several years ago
+## Example 1: Twitter US Airline Sentiment
 
-### 8. Future Improvements
 
-- Integrate the application with the **Twitter API** to enable real-time data analysis
-- Expand the dashboard to include other platforms (e.g., Facebook, Reddit)
-- Apply modern NLP models (e.g., **BERT**, **RoBERTa**) for better sentiment and context analysis
-- Implement more advanced graph models (e.g., Graph Neural Networks)
+Goal of data analysis is to ...
 
-### 9. Attachments
+### Dataset Description
 
-- [GitHub Repository with Application Code](https://github.com/SmallCelestial/ISMD)
-- Data Source: [Kaggle – Twitter US Airline Sentiment](https://www.kaggle.com/datasets/crowdflower/twitter-airline-sentiment)
+
+
+
+
+### Conclusions
