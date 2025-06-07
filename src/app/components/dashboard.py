@@ -1,8 +1,9 @@
+from collections import Counter
+
+import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
-from collections import Counter
 from wordcloud import WordCloud
-import matplotlib.pyplot as plt
 
 from src.app.presenter.presenter import NetworkPresenter
 from src.app.utils.constants import NodeSizeMetric
@@ -36,7 +37,7 @@ class Dashboard:
 
     def _show_data_description(self):
         st.subheader("Summary Statistics")
-        st.write(self.df.describe(include='all'))
+        st.write(self.df.describe(include="all"))
 
     def _show_data_columns_types(self):
         st.subheader("Column Data Types")
@@ -53,18 +54,21 @@ class Dashboard:
 
     def _show_data_distribution(self):
         st.subheader("Top Users by Tweet Count")
-        st.bar_chart(self.df['name'].value_counts().head(10))
+        st.bar_chart(self.df["name"].value_counts().head(10))
 
     def _show_tweet_frequency_over_time(self):
-        self.df['tweet_created'] = pd.to_datetime(self.df['tweet_created'])
-        time_series = self.df.groupby(self.df['tweet_created'].dt.date).size()
+        if "tweet_created" not in self.df.columns:
+            return
+
+        self.df["tweet_created"] = pd.to_datetime(self.df["tweet_created"])
+        time_series = self.df.groupby(self.df["tweet_created"].dt.date).size()
 
         st.subheader("Tweet Frequency Over Time")
         st.line_chart(time_series)
 
     def _show_text_analysis(self, starts_with: str = "#"):
         st.subheader("Most Common Words in Tweets")
-        text_data = " ".join(self.df['text'].dropna())
+        text_data = " ".join(self.df["text"].dropna())
         word_freq = Counter(text_data.lower().split())
 
         filtered_freq = {
@@ -75,20 +79,21 @@ class Dashboard:
         common_words = dict(Counter(filtered_freq).most_common(50))
 
         wordcloud = WordCloud(width=800, height=400).generate_from_frequencies(
-            common_words)
+            common_words
+        )
 
         fig, ax = plt.subplots()
-        ax.imshow(wordcloud, interpolation='bilinear')
+        ax.imshow(wordcloud, interpolation="bilinear")
         ax.axis("off")
         st.pyplot(fig)
 
     def _let_filter_data(self):
         st.subheader("Filter by User")
-        users = st.multiselect("Select users", options=self.df['name'].unique())
+        users = st.multiselect("Select users", options=self.df["name"].unique())
 
         filtered_df = self.df
         if users:
-            filtered_df = filtered_df[filtered_df['name'].isin(users)]
+            filtered_df = filtered_df[filtered_df["name"].isin(users)]
 
         st.dataframe(filtered_df)
 
@@ -182,7 +187,7 @@ class Dashboard:
             communities_count = {}
             for _, community_id in partition.items():
                 communities_count[community_id] = (
-                        communities_count.get(community_id, 0) + 1
+                    communities_count.get(community_id, 0) + 1
                 )
 
             community_df = pd.DataFrame.from_dict(
